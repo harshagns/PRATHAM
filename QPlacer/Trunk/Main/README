@@ -1,0 +1,7 @@
+This folder will contain the main codebase
+
+Consist of 3 folders
+
+Pre-Run  : All the functions before the algo is invoked.
+RUN	 : Algorithms.
+Post-RUN : Setting up the results for post-run analysis.

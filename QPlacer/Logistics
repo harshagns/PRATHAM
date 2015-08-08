@@ -1,0 +1,26 @@
+Installed 	:
+
+Text Editor 	: Sublime Text
+Python		: 2.7.6
+g++		: 4.8.4
+
+(Debian)
+Latex package	:
+	Debain:
+	sudo apt-get install texlive-full
+	
+	RHEL/Fedora
+	sudo yim install texlive-full
+
+
+SciPy full Stack:
+	Debian:
+	sudo apt-get install python-numpy python-scipy python-matplotlib ipython 		ipython-notebook python-pandas python-sympy python-nose
+
+	RHEL/Fedora
+	sudo yum install numpy scipy python-matplotlib ipython python-pandas sympy 		python-nose
+
+	Users of Fedora 17 and earlier should then upgrade IPython using pip:
+	sudo pip install --upgrade ipython
+
+

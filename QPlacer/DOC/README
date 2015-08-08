@@ -1,0 +1,17 @@
+This file contain all the documents created for the tool.
+
+Tool used for documentation is Latex (for Documentation/Flowchart/Poster/Paper/Presentation)
+
+This has/ will have 5 folders:
+
+Flowchart(s) : Will contain Flowcharts for all the algorithms implemented
+
+Documentation: The doc for the tools / algorithms
+ 
+Poster	     : Will contain poster content (at a later stage)
+
+Paper	     : Will contain any paper written for the tool/script etc (at a later stage)
+
+Presentation : Will contain all the presentation files.
+
+
