@@ -1,0 +1,146 @@
+\documentclass[a4paper]{article}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\graphicspath{
+{images/}}
+\usepackage{listings}
+\usepackage[utf8]{inputenc}
+\usepackage{datetime}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={210mm,297mm},
+ left=20mm,
+ right=20mm,
+ top=20mm,
+ bottom=20mm,
+ }
+
+
+\newcommand{\MyHookSign}{\hbox{\ensuremath\hookleftarrow}}
+\lstset{
+	commentstyle=\textit,
+	stringstyle=\texttt,
+	basicstyle=\small,
+	tabsize=4,
+	tab=$\to$,
+	float=tbph,
+	extendedchars,
+	breaklines,
+	prebreak={\space\MyHookSign},
+	frame=single,
+	showtabs=false,
+	showspaces=false,
+	showstringspaces=false,
+	keywordstyle=\bfseries,
+	identifierstyle=\ttfamily,
+	stringstyle=,
+	captionpos=b,
+	aboveskip=\bigskipamount,
+	language=c,
+	numbersep=4pt,
+	numbers=left,
+	numberstyle=\tiny,
+	escapeinside={(*@}{@*)} 	% to allow labels for lines
+}
+
+\lstdefinelanguage{Bluespec}
+	{morekeywords={module, function, endfunction, endmodule, if, Reg, UInt, Bit, int, return, begin, end, return, rule, endrule, Bool, Action, import, interface, mkReg, mkWire, synthesize, ActionValue, endinterface, method, endmethod, typedef, struct, bit, deriving, Eq, Bits},
+	morecomment=[l]{//}
+}
+
+\lstdefinelanguage{Verilog}
+	{morekeywords={module, function, endfunction, endmodule, if, reg, UInt, bit, int, return, begin, end, return, rule, endrule, Bool, Action, import, interface, mkReg, mkWire, synthesize, ActionValue, endinterface, method, endmethod, typedef, struct, bit, deriving, Eq, Bits},
+	morecomment=[l]{//}
+}
+
+
+\lstdefinelanguage{AssemblyM32}
+	{morekeywords={MVI,MOV,ADD,SUB,JMP,CALL,RET,RETI,ORG,PRL,PRT,DW,DS,NOP,END},
+	morecomment=[l]{;}
+}
+
+\title{\huge \vspace{50mm} ADVANCED EMBEDDED LOGIC DESIGN \vspace{5mm}\\ \huge ECE573 \vspace{90mm}\\ \huge ASSIGNMENT NINE\\}
+\author{K K Praveen Kumar   MT14060 \\ Raghav Kishore MT14067}
+\date{\today}
+
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+%\newpage
+%\thispagestyle{empty}
+%\tableofcontents
+
+%\newpage
+%\thispagestyle{empty}
+%\listoffigures
+
+%\newpage
+%\thispagestyle{empty}
+%\listoftables
+
+\newpage
+\pagenumbering{arabic}
+
+\section{Status Quo}
+\par The present state of affairs is enumerated below :
+\begin{enumerate}
+\item The UART module written in verilog has re-used from this web-portal titled \textit{www.fpga4fun.com}.
+\item Wrappers for both transmitter and receiver are written to do that byte2word conversion. 1 word equals 4 bytes for transmitter whereas it is 5 bytes for receiver. Design is tested on FPGA.
+\item UART bridge contains both of these wrappers for receiver and transmitter. It is to be noted that the wrappers are written in verilog.
+\item  ALU takes in 1 word(5 bytes as input instructions) and it sends out 1 word(4 bytes) as output. Design tested using testbench approach and is working.
+\item TOP level module contains UART Bridge and ALU.
+\item Due to recent changes, still few bugs remain in UART Bridge. As a result, serial communication is not working(at the time of submission).
+\end{enumerate}
+
+\section{Simulation}
+\par This section provides information regarding the simulation of our architecture. Due to permission issues in NTFS partition in which all assignment records are kept, the makefile is not able to execute the generated executable, hence bluespec workstation is used. Please do as directed.
+\begin{enumerate}
+\item In BSV Source folder, you will find ,among other files, which is required to simulate our architecture. This is titled as "tbMUBFALU2.bsv".
+\item Please open the terminal(Ctrl-Alt-t), and type this code
+\begin{lstlisting}
+$bluespec
+\end{lstlisting}
+\item Once the workstation is open, navigated to project tab and select new project. In the subsequent dialog box create a new project file.
+\item Again, from the workstation, under project tab, select options.
+\item Under options, please put these as following
+\begin{enumerate}
+\item Top File : tbMUBFALU2.bsv
+\item Top Module : mktbMUBFALU2
+\item Under compile tab, please select verilog instead of bluesim and choose the appropriate verilog simulator.
+\item Click Apply.
+\end{enumerate}
+\item Once the workstation is setup, press the button which does compilation, linking and simulation.
+\end{enumerate}
+
+\section{Instruction for Testing the Architecture}
+\par At present we are uploading the program instruction by instruction. The instruction is 5 bytes wide is included in the "To$_{-}$Board" file (no extensions). Alternatively, this could be done using a script in python, perl or tcl but we have not endeavored into it as of now due to debugging issues with UART.
+\begin{enumerate}
+\item Please launch the two terminals. (shortcut: Ctrl-Alt-t in keyboard).
+\item Once launched, type the following code in one of the terminal as shown below:
+\begin{lstlisting}
+$stty -F /dev/ttyACM0
+\end{lstlisting}
+\par This should return with the properties of the connection established. Baud rate should be 9600. Usually the baud rate is set automatically.
+\par Note : The device is listed under /dev/ttyACM0 might be different under your computer. Please change accordingly.
+\item On the other terminal use this command to monitor the result from the co-processor.
+\begin{lstlisting}
+$cat /dev/ttyACM0
+\end{lstlisting}
+\item Now, transfer each instruction using the following command:
+\begin{lstlisting}
+$ echo -en '\x7\xFF\x00\x00\x00' > \dev\ttyACM0
+\end{lstlisting}
+\par You have to repeat this step whilst changing the instructions as in the file "To$_{-}$Board".
+\item Once the last instruction is sent, the co-processor starts automatically.
+\item Switch to monitoring terminal to view the result.
+\end{enumerate}
+\end{document}
+
+
+
