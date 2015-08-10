@@ -1,6 +1,19 @@
 #! usr/bin/env python
-
+# Dev : Praveen Kumar K K 
+# Email Id - praveen1460@iiitd.ac.in
+#
+#-------------------------------------------------------------------
+# Functionality 	: Provides base classes
+# Format Supported	: N/A
+#
+# Input 		  	: N/A
+# Output		  	: N/A
+#
+#-------------------------------------------------------------------
 # Primary Classes
+
+#Defines mode of operations
+import mode as Mode
 
 #CELL
 class Cell():
@@ -27,14 +40,17 @@ class stdCell(Cell):
 		self.name_cell = name
 		self.Num_nets= numnets
 
-a = stdCell()
-a.get_id_numnets(1,34,'ANDx4112')
 
-print "Cell Name     : %s" % a.name_cell
-print "Bottom Left X : %d" % a.x
-print "Bottom Left Y : %d" % a.y
-print "Cell Heigth   : %d" % a.height
-print "Cell Width    : %d" % a.width
-print "Cell Type     : %s" % a.cell_type
-print "Cell ID       : %d" % a.Gate_ID
-print "Cell Nut Conn.: %d" % a.Num_nets
+
+#To test and debug
+if(Mode.Mode.debug):
+	a = stdCell()
+	a.get_id_numnets(1,34,'ANDx4112')
+	print "Cell Name     : %s" % a.name_cell
+	print "Bottom Left X : %d" % a.x
+	print "Bottom Left Y : %d" % a.y
+	print "Cell Heigth   : %d" % a.height
+	print "Cell Width    : %d" % a.width
+	print "Cell Type     : %s" % a.cell_type
+	print "Cell ID       : %d" % a.Gate_ID
+	print "Cell Nut Conn.: %d" % a.Num_nets
