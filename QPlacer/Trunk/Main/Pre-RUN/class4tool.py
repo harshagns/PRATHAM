@@ -33,12 +33,22 @@ class stdCell(Cell):
 		self.Gate_ID = 0
 		self.Num_nets= 0
 		self.cell_type = 'CORE'
+		self.Row_vector = []
+		self.Col_vector = []
+		self.Net_Weight = []
 
 	# Set the ID and number of net information for this cell
 	def get_id_numnets(self,id_cell,numnets,name):
 		self.Gate_ID = id_cell
 		self.name_cell = name
 		self.Num_nets= numnets
+
+	def construct_R_C_D(self,Net_data,Net_Val):
+		self.Row_vector.append(int(self.Gate_ID))
+		self.Col_vector.append(int(Net_data))
+		self.Net_Weight.append(int(Net_Val))
+
+
 
 
 
