@@ -34,10 +34,18 @@ from scipy.sparse import coo_matrix
 # ...Data below is to facilitate in creation of sparse matrix...
 # ...using a co-ordinate matrix. (Row,Coloumn)-(data)
 # ...Note - Row_List --> populate all the elements as id number.
-# ...Note - Col_list --> populate with the net_id.
+# ...Note - Col_list --> populate with the net_id
+#      	  - Set-ify each list
 # ...Note - net_Weight --> Initially 1 for all nets
 # Check for sanity :P
 # After that, pad info.
+# CORRCTION:
+# No Need to populate the Row and Data Vector initially.
+# Form Gate List
+# Take one gate at a time, find the intersection of the net info
+# ... by comparing each gate net info
+# ALgo :
+# 
 
 def input_parse():
 	#Gate_List
@@ -68,7 +76,7 @@ def input_parse():
 		temp_gate.get_id_numnets(int(temp_gate_id),int(temp_gate_numnets),temp_name)
 		for number in xrange(int(temp_gate_numnets)):
 			temp_Net_data = in_data[2+number]
-			#Net Weigth currently One.
+			#Net Weigth currently 1
 			temp_Net_Weight = 1
 			temp_gate.construct_R_C_D(int(temp_Net_data),int(temp_Net_Weight))
 		Design_Gate_List.append(temp_gate)	
@@ -82,16 +90,43 @@ def input_parse():
 	final_R_vector = []
 	final_C_Vector = []
 	final_Net_Weight = []
-	for each_gate in Design_Gate_List:
-		final_R_vector = final_R_vector + each_gate.Row_vector
-		final_C_Vector = final_C_Vector + each_gate.Col_vector
-		final_Net_Weight = final_Net_Weight + each_gate.Net_Weight
+
+	for number in xrange(0,int(Number_of_Gates)):
+
+		temp_col = set(Design_Gate_List[number].Col_vector)
+
+		for other_number in xrange(0,int(Number_of_Gates)):
+			if(number != other_number):
+				temp_other_col = set(Design_Gate_List[other_number].Col_vector)
+				temp_size = temp_col & temp_other_col
+				
+				if(len(temp_size)!=0):
+					final_R_vector.append(int(number))
+					final_C_Vector.append(int(other_number))
+					final_Net_Weight.append(int(1))
+
+
+		if(Mode.Mode.debug):
+			print Design_Gate_List[number].Gate_ID
+
+	#Prepare Connectivity Matrix
+	#final_R_vector = []
+	#final_C_Vector = []
+	#final_Net_Weight = []
+	#for each_gate in Design_Gate_List:
+	#	final_R_vector = final_R_vector + each_gate.Row_vector
+	#	final_C_Vector = final_C_Vector + each_gate.Col_vector
+	#	final_Net_Weight = final_Net_Weight + each_gate.Net_Weight
 
 
 	if(Mode.Mode.debug):
 		print "R Vector :", final_R_vector
 		print "C Vector :", final_C_Vector
 		print "Net Vector:",final_Net_Weight
+		print len(final_C_Vector)
+		print len(final_R_vector)
+		print len(final_Net_Weight)
+		
 
 	#Convert to Array
 	R_VECTOR = numpy.array(final_R_vector)
@@ -103,12 +138,13 @@ def input_parse():
 		print "R Vector :", R_VECTOR
 		print "C Vector :", C_VECTOR
 		print "Net Vector:",D_VECTOR
-
+#
 	#Convert to sparse matrix
-	Connectivity_Matrix = coo_matrix(D_VECTOR, (R_VECTOR, C_VECTOR)).toarray()
+	Connectivity_Matrix = coo_matrix((D_VECTOR, (R_VECTOR, C_VECTOR))).toarray()
 
 	if(Mode.Mode.debug):
 		print Connectivity_Matrix
+		print Connectivity_Matrix.shape
 	
 
 

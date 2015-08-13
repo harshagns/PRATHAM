@@ -44,9 +44,9 @@ class stdCell(Cell):
 		self.Num_nets= numnets
 
 	def construct_R_C_D(self,Net_data,Net_Val):
-		self.Row_vector.append(int(self.Gate_ID))
+		#self.Row_vector.append(int(self.Gate_ID))
 		self.Col_vector.append(int(Net_data))
-		self.Net_Weight.append(int(Net_Val))
+		#self.Net_Weight.append(int(Net_Val))
 
 
 
