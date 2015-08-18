@@ -14,13 +14,8 @@
 #
 #-------------------------------------------------------------------
 
-#Remove Only --> Shoud be Integrated in the Main Caller
-import mode as Mode
-import class4tool as cell
-import numpy
-from scipy.sparse import coo_matrix
-
-
+import 	mode 				as Mode
+import 	class4tool 			as cell
 #Task List:
 # Read the file in different directory							- D
 # Output the entire input_file 									- D
@@ -67,92 +62,73 @@ def input_parse():
 		print "Number of Gates : %s" % Number_of_Gates
 		print "Number of Nets  : %s" % Number_of_Nets
 
+	# Form the Gate List
 	for number in xrange(int(Number_of_Gates)):
 		in_data = input_file.readline().split()
 		temp_gate_id = in_data[0]
 		temp_gate_numnets = in_data[1]
 		temp_name = 'gate#'+in_data[0]
 		temp_gate = cell.stdCell()
-		temp_gate.get_id_numnets(int(temp_gate_id),int(temp_gate_numnets),temp_name)
+		temp_type = 'CORE'
+		temp_gate.get_id_numnets(int(temp_gate_id),int(temp_gate_numnets),temp_name,temp_type)
 		for number in xrange(int(temp_gate_numnets)):
 			temp_Net_data = in_data[2+number]
 			#Net Weigth currently 1
 			temp_Net_Weight = 1
 			temp_gate.construct_R_C_D(int(temp_Net_data),int(temp_Net_Weight))
 		Design_Gate_List.append(temp_gate)	
-		if(Mode.Mode.debug):
-			print "Cell ID       : %d" % temp_gate.Gate_ID,"\tCell Nut Conn.: %d" % temp_gate.Num_nets
-			print "Cell's R Data :   ",temp_gate.Row_vector
-			print "Cell's C Data :   ",temp_gate.Col_vector
-			print "Cell's D Data :   ",temp_gate.Net_Weight
-
-	#Prepare Connectivity Matrix
-	final_R_vector = []
-	final_C_Vector = []
-	final_Net_Weight = []
-
-	for number in xrange(0,int(Number_of_Gates)):
-
-		temp_col = set(Design_Gate_List[number].Col_vector)
-
-		for other_number in xrange(0,int(Number_of_Gates)):
-			if(number != other_number):
-				temp_other_col = set(Design_Gate_List[other_number].Col_vector)
-				temp_size = temp_col & temp_other_col
-				
-				if(len(temp_size)!=0):
-					final_R_vector.append(int(number))
-					final_C_Vector.append(int(other_number))
-					final_Net_Weight.append(int(1))
-
-
-		if(Mode.Mode.debug):
-			print Design_Gate_List[number].Gate_ID
-
-	#Prepare Connectivity Matrix
-	#final_R_vector = []
-	#final_C_Vector = []
-	#final_Net_Weight = []
-	#for each_gate in Design_Gate_List:
-	#	final_R_vector = final_R_vector + each_gate.Row_vector
-	#	final_C_Vector = final_C_Vector + each_gate.Col_vector
-	#	final_Net_Weight = final_Net_Weight + each_gate.Net_Weight
-
-
-	if(Mode.Mode.debug):
-		print "R Vector :", final_R_vector
-		print "C Vector :", final_C_Vector
-		print "Net Vector:",final_Net_Weight
-		print len(final_C_Vector)
-		print len(final_R_vector)
-		print len(final_Net_Weight)
 		
-
-	#Convert to Array
-	R_VECTOR = numpy.array(final_R_vector)
-	C_VECTOR = numpy.array(final_C_Vector)
-	D_VECTOR = numpy.array(final_Net_Weight)
-
-	if(Mode.Mode.debug):
-		print "\nARRAY"
-		print "R Vector :", R_VECTOR
-		print "C Vector :", C_VECTOR
-		print "Net Vector:",D_VECTOR
-#
-	#Convert to sparse matrix
-	Connectivity_Matrix = coo_matrix((D_VECTOR, (R_VECTOR, C_VECTOR))).toarray()
-
-	if(Mode.Mode.debug):
-		print Connectivity_Matrix
-		print Connectivity_Matrix.shape
 	
+	# Form the Pad List
+	# The next line to read consist of Number pads.
+	# Pad has these info:
+	#	X,Y Cordinates
+	#	Net_Id
+	#   Pad ID
+	
+	#Get Number of pads for this design.
+	in_data = input_file.readline().split()
+	Number_of_Pads = in_data[0]
 
 
+	#Form the Pad List
+	for number in xrange(int(Number_of_Pads)):
+		in_data = input_file.readline().split()
+		temp_pad_id = in_data[0]
+		temp_name = 'Pad#'+in_data[0]
+		temp_pad_numnets = 1
+		temp_pad = cell.stdCell()
+		temp_type = 'PAD'
+		temp_pad.get_id_numnets(int(temp_pad_id),int(temp_pad_numnets),temp_name,temp_type)
+		temp_Net_data = in_data[1]
+		#Net Weigth currently 1
+		temp_Net_Weight = 1
+		temp_pad.construct_R_C_D(int(temp_Net_data),int(temp_Net_Weight))
+		temp_pad_x = in_data[2]
+		temp_pad_y = in_data[3]
+		temp_pad.x = float(temp_pad_x)
+		temp_pad.y = float(temp_pad_y)
+		Design_Pad_List.append(temp_pad)
 
-
-
+	#GATE AND PAD LIST HAVE BEEN FORMED
+	
+	print "|------------SUMMARY-------------|"
+	print "\n"
+	print "Number\tof\tCore\tCells\t %d" % len(Design_Gate_List)
+	print "Number\tof\tPad\tCells\t %d" % len(Design_Pad_List)
+	print "Number\tof\tNets\t\t %d"	% int(Number_of_Nets)
+	
+	#REMOVE --> 
+	if(Mode.Mode.debug):
+		print "Cell ID\tCell Type\tNet Connected\tX\tY"
+		for each_gate in Design_Gate_List:
+			print each_gate.Gate_ID,"\t",each_gate.cell_type,"\t",each_gate.Col_vector,"\t",each_gate.x,"\t",each_gate.y
+		for each_pad in Design_Pad_List:
+			print each_pad.Gate_ID,"\t",each_pad.cell_type,"\t",each_pad.Col_vector,"\t",each_pad.x,"\t",each_pad.y	
+			
+	return (Design_Gate_List,Design_Pad_List,Number_of_Gates,Number_of_Pads,Number_of_Nets)
 
 
 # For Testing ; Remove Only.
-if(Mode.Mode.debug):
-	input_parse()
+#if(Mode.Mode.debug):
+#	input_parse()

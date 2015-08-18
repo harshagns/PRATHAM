@@ -32,16 +32,17 @@ class stdCell(Cell):
 		Cell.__init__(self)
 		self.Gate_ID = 0
 		self.Num_nets= 0
-		self.cell_type = 'CORE'
+		self.cell_type = 'UNK'
 		self.Row_vector = []
 		self.Col_vector = []
 		self.Net_Weight = []
 
 	# Set the ID and number of net information for this cell
-	def get_id_numnets(self,id_cell,numnets,name):
+	def get_id_numnets(self,id_cell,numnets,name,site_type):
 		self.Gate_ID = id_cell
 		self.name_cell = name
 		self.Num_nets= numnets
+		self.cell_type = site_type
 
 	def construct_R_C_D(self,Net_data,Net_Val):
 		#self.Row_vector.append(int(self.Gate_ID))
@@ -51,11 +52,10 @@ class stdCell(Cell):
 
 
 
-
 #To test and debug
 if(Mode.Mode.debug):
 	a = stdCell()
-	a.get_id_numnets(1,34,'ANDx4112')
+	a.get_id_numnets(1,34,'ANDx4112','CORE')
 	print "Cell Name     : %s" % a.name_cell
 	print "Bottom Left X : %d" % a.x
 	print "Bottom Left Y : %d" % a.y
