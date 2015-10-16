@@ -1,0 +1,109 @@
+\documentclass[a4paper]{article}
+
+\usepackage{natbib}
+\usepackage{timestamp}
+\usepackage{graphicx}
+\graphicspath{
+{images/}}
+\usepackage{listings}
+\usepackage[utf8]{inputenc}
+\usepackage{datetime}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={210mm,297mm},
+ left=20mm,
+ right=20mm,
+ top=20mm,
+ bottom=20mm,
+ }
+
+
+\newcommand{\MyHookSign}{\hbox{\ensuremath\hookleftarrow}}
+\lstset{
+	commentstyle=\textit,
+	stringstyle=\texttt,
+	basicstyle=\small,
+	tabsize=4,
+	tab=$\to$,
+	float=tbph,
+	extendedchars,
+	breaklines,
+	prebreak={\space\MyHookSign},
+	frame=single,
+	showtabs=false,
+	showspaces=false,
+	showstringspaces=false,
+	keywordstyle=\bfseries,
+	identifierstyle=\ttfamily,
+	stringstyle=,
+	captionpos=b,
+	aboveskip=\bigskipamount,
+	language=c,
+	numbersep=4pt,
+	numbers=left,
+	numberstyle=\tiny,
+	escapeinside={(*@}{@*)} 	% to allow labels for lines
+}
+
+\lstdefinelanguage{Bluespec}
+	{morekeywords={module, function, endfunction, endmodule, if, Reg, UInt, Bit, int, return, begin, end, return, rule, endrule, Bool, Action, import, interface, mkReg, mkWire, synthesize, ActionValue, endinterface, method, endmethod, typedef, struct, bit, deriving, Eq, Bits},
+	morecomment=[l]{//}
+}
+
+\lstdefinelanguage{Verilog}
+	{morekeywords={module, function, endfunction, endmodule, if, reg, UInt, bit, int, return, begin, end, return, rule, endrule, Bool, Action, import, interface, mkReg, mkWire, synthesize, ActionValue, endinterface, method, endmethod, typedef, struct, bit, deriving, Eq, Bits},
+	morecomment=[l]{//}
+}
+
+
+\lstdefinelanguage{AssemblyM32}
+	{morekeywords={MVI,MOV,ADD,SUB,JMP,CALL,RET,RETI,ORG,PRL,PRT,DW,DS,NOP,END},
+	morecomment=[l]{;}
+}
+
+\title{\huge \vspace{50mm} QPLACER \vspace{5mm}\\ \huge ECE699 \vspace{90mm}\\ \huge DOCUMENTATION\\ -- \\ \small Compiled on \today \\ \currenttime}
+\author{K K Praveen Kumar   MT14060}
+\date{\today}
+
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+%\newpage
+%\thispagestyle{empty}
+%\tableofcontents
+
+%\newpage
+%\thispagestyle{empty}
+%\listoffigures
+
+%\newpage
+%\thispagestyle{empty}
+%\listoftables
+
+\newpage
+
+\par 
+\begin{tabular}{| c | c | c |}
+\hline
+Class/Funtion & Name & Description \\
+\hline
+Class & class4tools & Describes base class Cell. \\
+& & stdCell class which is derivative of base Cell class \\
+\hline
+Funtion & input$_{-}$parse() & Parses the input file.\\
+\hline
+Class & Mode & Defins application or debug mode.\\
+\hline
+\end{tabular}
+
+
+
+\end{document}
+
+
+

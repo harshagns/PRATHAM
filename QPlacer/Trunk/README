@@ -1,0 +1,7 @@
+This Folder contatins 3 folders:
+
+Input: This folder will contain the input files for the script/tool.
+
+Main: This directory will contain the main codebase.
+
+Result: This folder will contain the ouput of the script.
